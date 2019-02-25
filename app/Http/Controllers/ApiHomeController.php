@@ -11,7 +11,7 @@ use App\Peserta_Kegiatan;
 use App\Charts\HomeChart;
 use App\Http\Controllers\Helper;
 use App\Charts\HomeHighchart;
-use App\Publikasi_Jurnal;
+// use App\Publikasi_Jurnal;
 use Excel;
 use Auth;
 
@@ -83,10 +83,17 @@ class ApiHomeController extends Controller
         $pengmasTigaThnLalu=Kegiatan::where('id_tipe_kegiatan','3')->whereYear('tanggal_akhir',$nowYear-3)->count();
 
         //Publikasi
-        $pubThnini = Publikasi_Jurnal::where('tahun_terbit', $nowYear)->count();
-        $pubThnlalu = Publikasi_Jurnal::where('tahun_terbit', $nowYear-1)->count();
-        $pubDuaThnlalu = Publikasi_Jurnal::where('tahun_terbit', $nowYear-2)->count();
-        $pubTigaThnlalu = Publikasi_Jurnal::where('tahun_terbit', $nowYear-3)->count();
+        $jurnalThnIni = Jurnal::where('tahun_terbit', $nowYear)->count();
+        $jurnalThnLalu = Jurnal::where('tahun_terbit', $nowYear-1)->count();
+        $jurnalDuaThnLalu = Jurnal::where('tahun_terbit', $nowYear-2)->count();
+        $jurnalTigaThnLalu = Jurnal::where('tahun_terbit', $nowYear-3)->count();
+
+        $bukuThnIni = Buku::where('tahun_terbit', $nowYear)->count();
+        $bukuThnLalu = Buku::where('tahun_terbit', $nowYear-1)->count();
+        $bukuDuaThnLalu = Buku::where('tahun_terbit', $nowYear-2)->count();
+        $bukuTigaThnLalu = Buku::where('tahun_terbit', $nowYear-3)->count();
+
+
         // Panell dashboar
         $peneliti = Peneliti::count();
         $penelitian = Kegiatan::where('id_tipe_kegiatan','1')->count();
@@ -109,9 +116,23 @@ class ApiHomeController extends Controller
         $penelitinonaktif = $peneliti - $penelitiaktif;
 
 
-
-
-        return response()->json(['succes'=>true,'message'=>"berhasil",'penelitinonaktif' => $penelitinonaktif,'penelitiaktif' => $penelitiaktif, 'peneliti' => $peneliti,'penelitian'=>$penelitian,'kerjasama'=>$kerjasama,'pengmas'=>$pengmas,'seminarWorkshop'=>$seminarWorkshop,'penelitianThnLalu' => $penelitianThnLalu,'penelitianDuaThnLalu'=>$penelitianDuaThnLalu,'penelitianTigaThnLalu'=>$penelitianTigaThnLalu, 'seminarWorkshopThnLalu' => $seminarWorkshopThnLalu, 'seminarWorkshopDuaThnLalu'=>$seminarWorkshopDuaThnLalu, 'seminarWorkshopTigaThnLalu'=>$seminarWorkshopTigaThnLalu, 'pengmasThnLalu'=>$pengmasThnLalu,'pengmasDuaThnLalu'=>$pengmasDuaThnLalu,'pengmasTigaThnLalu'=>$pengmasTigaThnLalu,'kerjasamaThnLalu'=>$kerjasamaThnLalu,'kerjasamaDuaThnLalu'=>$kerjasamaDuaThnLalu,'kerjasamaTigaThnLalu'=>$kerjasamaTigaThnLalu,'penelitianThnIni'=>$penelitianThnIni,'kerjasamaThnIni'=>$kerjasamaThnIni,'seminarWorkshopThnIni'=>$seminarWorkshopThnIni,'pengmasThnIni'=>$pengmasThnIni,'thnIni'=>$thnIni,'thnLalu'=>$thnLalu,'duaThnLalu'=>$duaThnLalu,'tigaThnLalu'=>$tigaThnLalu,'pubThnini'=>$pubThnini,'pubThnlalu'=>$pubThnlalu,'pubDuaThnlalu'=>$pubDuaThnlalu,'pubTigaThnlalu'=>$pubTigaThnlalu,'buku'=>$buku,'jurnal'=>$jurnal]);
+        return response()->
+        json(['succes'=>true,'message'=>"berhasil",
+        'penelitinonaktif' => $penelitinonaktif,
+        'penelitiaktif' => $penelitiaktif, 
+        'peneliti' => $peneliti,
+        'penelitian'=>$penelitian,
+        'kerjasama'=>$kerjasama,
+        'pengmas'=>$pengmas,
+        'seminarWorkshop'=>$seminarWorkshop,
+        'penelitianThnLalu' => $penelitianThnLalu,
+        'penelitianDuaThnLalu'=>$penelitianDuaThnLalu,
+        'penelitianTigaThnLalu'=>$penelitianTigaThnLalu, 'seminarWorkshopThnLalu' => $seminarWorkshopThnLalu, 'seminarWorkshopDuaThnLalu'=>$seminarWorkshopDuaThnLalu, 'seminarWorkshopTigaThnLalu'=>$seminarWorkshopTigaThnLalu, 'pengmasThnLalu'=>$pengmasThnLalu,'pengmasDuaThnLalu'=>$pengmasDuaThnLalu,'pengmasTigaThnLalu'=>$pengmasTigaThnLalu,'kerjasamaThnLalu'=>$kerjasamaThnLalu,'kerjasamaDuaThnLalu'=>$kerjasamaDuaThnLalu,'kerjasamaTigaThnLalu'=>$kerjasamaTigaThnLalu,'penelitianThnIni'=>$penelitianThnIni,'kerjasamaThnIni'=>$kerjasamaThnIni,'seminarWorkshopThnIni'=>$seminarWorkshopThnIni,'pengmasThnIni'=>$pengmasThnIni,'thnIni'=>$thnIni,'thnLalu'=>$thnLalu,'duaThnLalu'=>$duaThnLalu,'tigaThnLalu'=>$tigaThnLalu,
+        'jurnalThnIni'=>$jurnalThnIni,'jurnalThnLalu'=>$jurnalThnLalu,'jurnalDuaThnLalu'=>$jurnalDuaThnLalu,
+        'jurnalTigaThnLalu'=>$jurnalTigaThnLalu,
+        'bukuThnIni'=>$bukuThnIni,'bukuThnLalu'=>$bukuThnLalu,'bukuDuaThnLalu'=>$bukuDuaThnLalu,
+        'bukuTigaThnLalu'=>$bukuTigaThnLalu,
+        'buku'=>$buku,'jurnal'=>$jurnal]);
     }
 
 

@@ -22,6 +22,11 @@ class Peneliti_semua extends Model
   public function publikasi_jurnal(){
     return $this->belongsToMany('App\Publikasi_Jurnal','peserta_publikasi_jurnal','id_peneliti','id_publikasi_jurnal');
   }
+
+  public function buku(){
+    return $this->belongsToMany('App\Buku','peserta_publikasi_buku','id_peneliti','id_publikasi_buku');
+  }
+
   // public function kegiatan2(){
   //   return $this->morphedByMany('App\Kegiatan','peserta_kegiatan','id_peneliti','id_kegiatan');
   // }

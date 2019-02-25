@@ -19,5 +19,10 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/login', 'ApiAuthController@login');
 
-Route::get('/getpeneliti', 'ApiPenelitiController@index');
+//home
 Route::get('/gethome', 'ApiHomeController@index');
+
+//peneliti
+Route::get('/getpeneliti', 'ApiPenelitiController@index');
+Route::get('/detailpeneliti/{id}', 'ApiPenelitiController@detail_peneliti');
+

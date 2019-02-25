@@ -4,12 +4,20 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Peneliti;
+use App\Peneliti_semua;
+use App\Peserta_Kegiatan;
+use App\Kegiatan;
+use App\Departemen;
+use App\Fakultas;
+use App\Publikasi_Jurnal;
+use App\Buku;
+use App\Tipe_kegiatan;
 
 class ApiPenelitiController extends Controller
 {
     public function index()
     {
-      $penelitis = Peneliti::with('Pegawai')->get()->sortBy('Pegawai.nama');
+      $penelitis = Peneliti::with('Pegawai')->with('Departemen')->get();
 
       //Jumlah peneliti tingkat Fakultas
       $jmlFaperta = Peneliti::with('Departemen')->whereHas('Departemen', function($tipe){ $tipe->where('id_fakultas','1');})->count();
@@ -92,6 +100,207 @@ class ApiPenelitiController extends Controller
       $jmlProdPengPertanian = Peneliti::where('id_departemen','54')->count();
       $jmlParVet = Peneliti::where('id_departemen','55')->count(); 
 
-      return response() -> json(['jmlFaperta'=>$jmlFaperta,'jmlFkh'=>$jmlFkh,'jmlFpik'=>$jmlFpik,'jmlFapet'=>$jmlFapet,'jmlFahutan'=>$jmlFahutan,'jmlFateta'=>$jmlFateta,'jmlFmipa'=>$jmlFmipa,'jmlFem'=>$jmlFem,'jmlFema'=>$jmlFema,'jmlDip'=>$jmlDip,'jmlSb'=>$jmlSb,'jmlSps'=>$jmlSps,'jmlAGH'=>$jmlAGH,'jmlIlmuTanah'=>$jmlIlmuTanah,'jmlProteksiTanaman'=>$jmlProteksiTanaman,'jmlARL'=>$jmlARL,'jmlAnatomiFisiologi'=>$jmlAnatomiFisiologi,'jmlIlmuPenyakitHewan'=>$jmlIlmuPenyakitHewan,'jmlKlinikReproduksi'=>$jmlKlinikReproduksi,'jmlBDP'=>$jmlBDP,'jmlMSP'=>$jmlMSP,'jmlTHP'=>$jmlTHP,'jmlPSP'=>$jmlPSP,'jmlITK'=>$jmlITK,'jmlIPTP'=>$jmlIPTP,'jmlINTP'=>$jmlINTP,'jmlMNH'=>$jmlMNH,'jmlHH'=>$jmlHH,'jmlKSHE'=>$jmlKSHE,'jmlSilvikultur'=>$jmlSilvikultur,'jmlTMB'=>$jmlTMB,'jmlTIP'=>$jmlTIP,'jmlSIL'=>$jmlSIL,'jmlITP'=>$jmlITP,'jmlSTK'=>$jmlSTK,'jmlGFM'=>$jmlGFM,'jmlBIO'=>$jmlBIO,'jmlKIM'=>$jmlKIM,'jmlMAT'=>$jmlMAT,'jmlKOM'=>$jmlKOM,'jmlFIS'=>$jmlFIS,'jmlBiokim'=>$jmlBiokim,'jmlIE'=>$jmlIE,'jmlMAN'=>$jmlMAN,'jmlAGB'=>$jmlAGB,'jmlESL'=>$jmlESL,'jmlGM'=>$jmlGM,'jmlIKK'=>$jmlIKK,'jmlSKPM'=>$jmlSKPM,'jmlKomunikasi'=>$jmlKomunikasi,'jmlEkow'=>$jmlEkow,'jmlManIn'=>$jmlManIn,'jmlTekKom'=>$jmlTekKom,'jmlSJMP'=>$jmlSJMP,'jmlMIJMG'=>$jmlMIJMG,'jmlTIB'=>$jmlTIB,'jmlManPerBud'=>$jmlManPerBud,'jmlManTekTer'=>$jmlManTekTer,'jmlManAGB'=>$jmlManAGB,'jmlPPPM'=>$jmlPPPM,'jmlTKJ'=>$jmlTKJ,'jmlAnKim'=>$jmlAnKim,'jmlTekManLing'=>$jmlTekManLing,'jmlAkuntansi'=>$jmlAkuntansi,'jmlPerkebunanKlpSwt'=>$jmlPerkebunanKlpSwt,'jmlProdPengPertanian'=>$jmlProdPengPertanian,'jmlParVet'=>$jmlParVet]);
+      return response() -> json(['peneliti' => $penelitis, 'jmlFaperta'=>$jmlFaperta,'jmlFkh'=>$jmlFkh,'jmlFpik'=>$jmlFpik,'jmlFapet'=>$jmlFapet,'jmlFahutan'=>$jmlFahutan,'jmlFateta'=>$jmlFateta,'jmlFmipa'=>$jmlFmipa,'jmlFem'=>$jmlFem,'jmlFema'=>$jmlFema,'jmlDip'=>$jmlDip,'jmlSb'=>$jmlSb,'jmlSps'=>$jmlSps,'jmlAGH'=>$jmlAGH,'jmlIlmuTanah'=>$jmlIlmuTanah,'jmlProteksiTanaman'=>$jmlProteksiTanaman,'jmlARL'=>$jmlARL,'jmlAnatomiFisiologi'=>$jmlAnatomiFisiologi,'jmlIlmuPenyakitHewan'=>$jmlIlmuPenyakitHewan,'jmlKlinikReproduksi'=>$jmlKlinikReproduksi,'jmlBDP'=>$jmlBDP,'jmlMSP'=>$jmlMSP,'jmlTHP'=>$jmlTHP,'jmlPSP'=>$jmlPSP,'jmlITK'=>$jmlITK,'jmlIPTP'=>$jmlIPTP,'jmlINTP'=>$jmlINTP,'jmlMNH'=>$jmlMNH,'jmlHH'=>$jmlHH,'jmlKSHE'=>$jmlKSHE,'jmlSilvikultur'=>$jmlSilvikultur,'jmlTMB'=>$jmlTMB,'jmlTIP'=>$jmlTIP,'jmlSIL'=>$jmlSIL,'jmlITP'=>$jmlITP,'jmlSTK'=>$jmlSTK,'jmlGFM'=>$jmlGFM,'jmlBIO'=>$jmlBIO,'jmlKIM'=>$jmlKIM,'jmlMAT'=>$jmlMAT,'jmlKOM'=>$jmlKOM,'jmlFIS'=>$jmlFIS,'jmlBiokim'=>$jmlBiokim,'jmlIE'=>$jmlIE,'jmlMAN'=>$jmlMAN,'jmlAGB'=>$jmlAGB,'jmlESL'=>$jmlESL,'jmlGM'=>$jmlGM,'jmlIKK'=>$jmlIKK,'jmlSKPM'=>$jmlSKPM,'jmlKomunikasi'=>$jmlKomunikasi,'jmlEkow'=>$jmlEkow,'jmlManIn'=>$jmlManIn,'jmlTekKom'=>$jmlTekKom,'jmlSJMP'=>$jmlSJMP,'jmlMIJMG'=>$jmlMIJMG,'jmlTIB'=>$jmlTIB,'jmlManPerBud'=>$jmlManPerBud,'jmlManTekTer'=>$jmlManTekTer,'jmlManAGB'=>$jmlManAGB,'jmlPPPM'=>$jmlPPPM,'jmlTKJ'=>$jmlTKJ,'jmlAnKim'=>$jmlAnKim,'jmlTekManLing'=>$jmlTekManLing,'jmlAkuntansi'=>$jmlAkuntansi,'jmlPerkebunanKlpSwt'=>$jmlPerkebunanKlpSwt,'jmlProdPengPertanian'=>$jmlProdPengPertanian,'jmlParVet'=>$jmlParVet]);
     }
+
+
+    public function detail_peneliti($id)
+    {
+      $peneliti = Peneliti::with('Pegawai')->with('Departemen')->where('id_peneliti',$id)->first();
+      if($peneliti == NULL ){
+        return abort(404);
+      }
+      else {
+      $nowYear = date('Y');
+      $nowdate = date('Y-m-d');
+
+      //date
+      $thnIni = $nowYear;
+      $thnLalu = $nowYear-1;
+      $duaThnLalu = $nowYear-2;
+      $tigaThnLalu = $nowYear-3;
+      
+      //Jumlah Kegiatan
+      $queryDikti = Peneliti_semua::with(['Kegiatan'=>function($var){ $var->where('id_tipe_kegiatan',1);}])->where('id',$id)->first();
+      $penelitianDikti=$queryDikti->Kegiatan->count();
+
+      $queryKerjasama = Peneliti_semua::with(['Kegiatan'=>function($var){ $var->where('id_tipe_kegiatan',2);}])->where('id',$id)->first();
+      $kerjasama = $queryKerjasama->Kegiatan->count();
+
+      $queryPengmas = Peneliti_semua::with(['Kegiatan'=>function($var){ $var->where('id_tipe_kegiatan',3);}])->where('id',$id)->first();
+      $pengmas = $queryPengmas->Kegiatan->count();
+
+      $querySeminar = Peneliti_semua::with(['Kegiatan'=>function($var){ $var->where('id_tipe_kegiatan',4);}])->where('id',$id)->first();
+      $seminarWorkshop = $querySeminar->Kegiatan->count();
+
+      $queryJurnal = Peneliti_semua::with(['Publikasi_Jurnal'=>function($var){}])->where('id',$id)->first();
+      $jurnals=$queryJurnal->Publikasi_Jurnal->count();
+
+      $queryBuku = Peneliti_semua::with(['Buku'=>function($var){}])->where('id',$id)->first();
+      $bukus= $queryBuku->Buku->count();
+    
+      //thn ini
+      $querydiktiThnIni = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowYear, $nowdate){ $var->where('id_tipe_kegiatan',1)->where('tanggal_akhir','<', $nowdate)->whereYear('tanggal_akhir',$nowYear);}])->where('id',$id)->first();
+      $diktiThnIni=$querydiktiThnIni->Kegiatan->count();
+
+      $querykerjasamaThnIni = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowYear, $nowdate){ $var->where('id_tipe_kegiatan',2)->where('tanggal_akhir','<', $nowdate)->whereYear('tanggal_akhir',$nowYear);}])->where('id',$id)->first();
+      $kerjasamaThnIni=$querykerjasamaThnIni->Kegiatan->count();
+
+      $querypengmasThnIni = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowYear, $nowdate){ $var->where('id_tipe_kegiatan',3)->where('tanggal_akhir','<', $nowdate)->whereYear('tanggal_akhir',$nowYear);}])->where('id',$id)->first();
+      $pengmasThnIni=$querypengmasThnIni->Kegiatan->count();
+
+      $querysemwoThnIni = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowYear, $nowdate){ $var->where('id_tipe_kegiatan',4)->where('tanggal_akhir','<', $nowdate)->whereYear('tanggal_akhir',$nowYear);}])->where('id',$id)->first();
+      $semwoThnIni=$querysemwoThnIni->Kegiatan->count();
+
+      $queryjurnalThnIni = Peneliti_semua::with(['Publikasi_Jurnal'=>function($var) use($nowYear){ $var->whereYear('tahun_terbit',$nowYear);}])->where('id',$id)->first();
+      $jurnalThnIni=$queryjurnalThnIni->Publikasi_Jurnal->count();
+
+      $querybukuThnIni = Peneliti_semua::with(['Buku'=>function($var) use($nowYear){ $var->whereYear('tahun_terbit',$nowYear);}])->where('id',$id)->first();
+      $bukuThnIni=$querybukuThnIni->Buku->count();
+
+      //Kegiatan thn lalu
+      $querydiktiThnLalu = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowYear, $nowdate){ $var->where('id_tipe_kegiatan',1)->whereYear('tanggal_akhir',$nowYear-1);}])->where('id',$id)->first();
+      $diktiThnLalu=$querydiktiThnLalu->Kegiatan->count();
+
+      $querykerjasamaThnLalu = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowYear){ $var->where('id_tipe_kegiatan',2)->whereYear('tanggal_akhir',$nowYear-1);}])->where('id',$id)->first();
+      $kerjasamaThnLalu=$querykerjasamaThnLalu->Kegiatan->count();
+
+      $querypengmasThnLalu = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowYear){ $var->where('id_tipe_kegiatan',3)->whereYear('tanggal_akhir',$nowYear-1);}])->where('id',$id)->first();
+      $pengmasThnLalu=$querypengmasThnLalu->Kegiatan->count();
+
+      $querysemwoThnLalu = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowYear){ $var->where('id_tipe_kegiatan',4)->whereYear('tanggal_akhir',$nowYear-1);}])->where('id',$id)->first();
+      $semwoThnLalu=$querysemwoThnLalu->Kegiatan->count();
+
+      $queryjurnalThnLalu = Peneliti_semua::with(['Publikasi_Jurnal'=>function($var) use($nowYear){ $var->whereYear('tahun_terbit',$nowYear-1);}])->where('id',$id)->first();
+      $jurnalThnLalu=$queryjurnalThnLalu->Publikasi_Jurnal->count();
+
+      $querybukuThnLalu = Peneliti_semua::with(['Buku'=>function($var) use($nowYear){ $var->whereYear('tahun_terbit',$nowYear-1);}])->where('id',$id)->first();
+      $bukuThnLalu=$querybukuThnLalu->Buku->count();
+
+      //duaThnlalu
+      $querydiktiDuaThnLalu = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowYear){ $var->where('id_tipe_kegiatan',1)->whereYear('tanggal_akhir',$nowYear-2);}])->where('id',$id)->first();
+      $diktiDuaThnLalu=$querydiktiDuaThnLalu->Kegiatan->count();
+
+      $querykerjasamaDuaThnLalu = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowYear){ $var->where('id_tipe_kegiatan',2)->whereYear('tanggal_akhir',$nowYear-2);}])->where('id',$id)->first();
+      $kerjasamaDuaThnLalu=$querykerjasamaDuaThnLalu->Kegiatan->count();
+
+      $querypengmasDuaThnLalu = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowYear){ $var->where('id_tipe_kegiatan',3)->whereYear('tanggal_akhir',$nowYear-2);}])->where('id',$id)->first();
+      $pengmasDuaThnLalu=$querypengmasDuaThnLalu->Kegiatan->count();
+
+      $querysemwoDuaThnLalu = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowYear){ $var->where('id_tipe_kegiatan',4)->whereYear('tanggal_akhir',$nowYear-2);}])->where('id',$id)->first();
+      $semwoDuaThnLalu=$querysemwoDuaThnLalu->Kegiatan->count();
+
+      $queryjurnalDuaThnLalu = Peneliti_semua::with(['Publikasi_Jurnal'=>function($var) use($nowYear){ $var->whereYear('tahun_terbit',$nowYear-2);}])->where('id',$id)->first();
+      $jurnalDuaThnLalu=$queryjurnalDuaThnLalu->Publikasi_Jurnal->count();
+
+      $querybukuDuaThnLalu = Peneliti_semua::with(['Buku'=>function($var) use($nowYear){ $var->whereYear('tahun_terbit',$nowYear-2);}])->where('id',$id)->first();
+      $bukuDuaThnLalu=$querybukuDuaThnLalu->Buku->count();
+
+      //TigaThn
+      $querydiktiTigaThnLalu = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowYear){ $var->where('id_tipe_kegiatan',1)->whereYear('tanggal_akhir',$nowYear-3);}])->where('id',$id)->first();
+      $diktiTigaThnLalu=$querydiktiTigaThnLalu->Kegiatan->count();
+
+      $querykerjasamaTigaThnLalu = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowYear){ $var->where('id_tipe_kegiatan',2)->whereYear('tanggal_akhir',$nowYear-3);}])->where('id',$id)->first();
+      $kerjasamaTigaThnLalu=$querykerjasamaTigaThnLalu->Kegiatan->count();
+
+      $querypengmasTigaThnLalu = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowYear){ $var->where('id_tipe_kegiatan',3)->whereYear('tanggal_akhir',$nowYear-3);}])->where('id',$id)->first();
+      $pengmasTigaThnLalu=$querypengmasTigaThnLalu->Kegiatan->count();
+
+      $querysemwoTigaThnLalu = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowYear){ $var->where('id_tipe_kegiatan',4)->whereYear('tanggal_akhir',$nowYear-3);}])->where('id',$id)->first();
+      $semwoTigaThnLalu=$querysemwoTigaThnLalu->Kegiatan->count();
+  
+      //Kegiatan yang sedang dilakukan
+      $kegiatanOngoing = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowdate){ $var->with('Tipe_kegiatan')
+      ->where(function($k){
+          $k->where('id_tipe_kegiatan',1)
+          ->orWhere('id_tipe_kegiatan',2)
+          ->orWhere('id_tipe_kegiatan',3);
+          })
+      ->where('tanggal_akhir','>=', $nowdate)->orderBy('nama_kegiatan','asc');}])->where('id',$id)->first();
+
+      $penelitianOngoing = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowdate){ $var->with('Tipe_kegiatan')->where('id_tipe_kegiatan',1)->where('tanggal_akhir','>=', $nowdate)->orderBy('nama_kegiatan','asc');}])->where('id',$id)->first();
+      $sumpenelitianOngoing = $penelitianOngoing->Kegiatan->count();
+
+      $kerjasamaOngoing = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowdate){ $var->with('Tipe_kegiatan')->where('id_tipe_kegiatan',2)->where('tanggal_akhir','>=', $nowdate)->orderBy('nama_kegiatan','asc');}])->where('id',$id)->first();
+      $sumkerjasamaOngoing = $kerjasamaOngoing->Kegiatan->count();
+
+      $pengmasOngoing = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowdate){ $var->with('Tipe_kegiatan')->where('id_tipe_kegiatan',3)->where('tanggal_akhir','>=', $nowdate)->orderBy('nama_kegiatan','asc');}])->where('id',$id)->first();
+      $sumpengmasOngoing = $pengmasOngoing->Kegiatan->count();
+
+      //Kegiatan yang telah selesai
+      $kegiatanPast = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowdate){ $var->with('Tipe_kegiatan')
+        ->where('tanggal_akhir','<', $nowdate)->orderBy('nama_kegiatan','asc');}])->where('id',$id)->first();
+
+      $penelitianPast = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowdate){ $var->with('Tipe_kegiatan')->where('id_tipe_kegiatan',1)->where('tanggal_akhir','<', $nowdate)->orderBy('nama_kegiatan','asc');}])->where('id',$id)->first();
+      $sumpenelitianPast = $penelitianPast->Kegiatan->count();
+
+      $kerjasamaPast = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowdate){ $var->with('Tipe_kegiatan')->where('id_tipe_kegiatan',2)->where('tanggal_akhir','<', $nowdate)->orderBy('nama_kegiatan','asc');}])->where('id',$id)->first();
+      $sumkerjasamaPast = $kerjasamaPast->Kegiatan->count();
+
+      $pengmasPast = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowdate){ $var->with('Tipe_kegiatan')->where('id_tipe_kegiatan',3)->where('tanggal_akhir','<', $nowdate)->orderBy('nama_kegiatan','asc');}])->where('id',$id)->first();
+      $sumpengmasPast = $pengmasPast->Kegiatan->count();
+
+      $seminarPast = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowdate){ $var->with('Tipe_kegiatan')->where('id_tipe_kegiatan',4)->orderBy('nama_kegiatan','asc');}])->where('id',$id)->first();
+
+
+      $jurnalPast = Peneliti_semua::with(['Publikasi_Jurnal'=>function($var) use($nowdate){ $var->orderBy('judul_artikel','asc');}])->where('id',$id)->first();
+
+      $bukuPast = Peneliti_semua::with(['Buku'=>function($var) use($nowdate){ $var->orderBy('judul_buku','asc');}])->where('id',$id)->first();
+     
+      // $peran[][]=NULL;
+      //   foreach($seminarPast->Kegiatan as $key1 => $sem){
+      //     foreach ($sem->peneliti_semua as $key2 => $var) {
+      //       $asd=Peserta_Kegiatan::where('id_kegiatan',$sem->id)->where('id_peneliti', $id)->first();
+      //       $peran[$key1][$key2]=$asd->Peran->nama_peran;
+      //     }
+      //   }
+  
+      //Seminar per Regional
+      $semInternasional = Peneliti_semua::with(['Kegiatan'=>function($var){ $var->where('id_kategori_tipe_kegiatan',23);}])->where('id',$id)->first();
+      $jmlInternasional = $semInternasional->Kegiatan->count();
+
+      $semNasional = Peneliti_semua::with(['Kegiatan'=>function($var){ $var->where('id_kategori_tipe_kegiatan',24);}])->where('id',$id)->first();
+      $jmlNasional = $semNasional->Kegiatan->count();
+
+      //Peran
+      //nasional
+      $pesertaNasional = Peneliti_semua::with(['Kegiatan'=>function($var){ $var->where('id_kategori_tipe_kegiatan',24)->where('id_peran',7);}])->where('id',$id)->first();
+      $sbgpesertaNasional = $pesertaNasional->Kegiatan->count();
+
+      $oralNasional = Peneliti_semua::with(['Kegiatan'=>function($var){ $var->where('id_kategori_tipe_kegiatan',24)->where('id_peran',5);}])->where('id',$id)->first();
+      $sbgoralNasional = $oralNasional->Kegiatan->count();
+
+      $posterNasional = Peneliti_semua::with(['Kegiatan'=>function($var){ $var->where('id_kategori_tipe_kegiatan',24)->where('id_peran',6);}])->where('id',$id)->first();
+      $sbgposterNasional = $posterNasional->Kegiatan->count();
+
+      $keynoteNasional = Peneliti_semua::with(['Kegiatan'=>function($var){ $var->where('id_kategori_tipe_kegiatan',24)->where('id_peran',4);}])->where('id',$id)->first();
+      $sbgkeynoteNasional = $keynoteNasional->Kegiatan->count();
+
+      //internasinal
+      $pesertaInternasional = Peneliti_semua::with(['Kegiatan'=>function($var){ $var->where('id_kategori_tipe_kegiatan',23)->where('id_peran',7);}])->where('id',$id)->first();
+      $sbgpesertaInternasional = $pesertaInternasional->Kegiatan->count();
+
+      $oralInternasional = Peneliti_semua::with(['Kegiatan'=>function($var){ $var->where('id_kategori_tipe_kegiatan',23)->where('id_peran',5);}])->where('id',$id)->first();
+      $sbgoralInternasional = $oralInternasional->Kegiatan->count();
+
+      $posterInternasional = Peneliti_semua::with(['Kegiatan'=>function($var){ $var->where('id_kategori_tipe_kegiatan',23)->where('id_peran',6);}])->where('id',$id)->first();
+      $sbgposterInternasional = $posterInternasional->Kegiatan->count();
+
+      $keynoteInternasional = Peneliti_semua::with(['Kegiatan'=>function($var){ $var->where('id_kategori_tipe_kegiatan',23)->where('id_peran',4);}])->where('id',$id)->first();
+      $sbgkeynoteInternasional = $keynoteInternasional->Kegiatan->count();
+
+      return response()->json([
+      'peneliti' => $peneliti,'penelitianDikti'=>$penelitianDikti,'kerjasama'=>$kerjasama,'seminarWorkshop'=>$seminarWorkshop,'pengmas'=>$pengmas,'jurnals'=>$jurnals,'bukus'=>$bukus,
+      'thnIni'=>$thnIni,'thnLalu'=>$thnLalu,'duaThnLalu'=>$duaThnLalu,'tigaThnLalu'=>$tigaThnLalu,
+      'diktiThnIni'=>$diktiThnIni,'kerjasamaThnIni'=>$kerjasamaThnIni,'semwoThnIni'=>$semwoThnIni,'pengmasThnIni'=>$pengmasThnIni,'jurnalThnIni'=>$jurnalThnIni, 'bukuThnIni'=>$bukuThnIni,
+      'diktiThnLalu'=>$diktiThnLalu,'kerjasamaThnLalu'=>$kerjasamaThnLalu,'semwoThnLalu'=>$semwoThnLalu,'pengmasThnLalu'=>$pengmasThnLalu, 'jurnalThnLalu'=>$jurnalThnLalu, 'bukuThnLalu'=>$bukuThnLalu,
+      'diktiDuaThnLalu'=>$diktiDuaThnLalu,'kerjasamaDuaThnLalu'=>$kerjasamaDuaThnLalu,'semwoDuaThnLalu'=>$semwoDuaThnLalu,'pengmasDuaThnLalu'=>$pengmasDuaThnLalu, 'jurnalDuaThnLalu'=>$jurnalDuaThnLalu, 'bukuDuaThnLalu'=>$bukuDuaThnLalu, 
+      'diktiTigaThnLalu'=>$diktiTigaThnLalu,'kerjasamaTigaThnLalu'=>$kerjasamaTigaThnLalu,'semwoTigaThnLalu'=>$semwoTigaThnLalu,'pengmasTigaThnLalu'=>$pengmasTigaThnLalu,
+      'kegiatanPast'=>$kegiatanPast,'kegiatanOngoing'=>$kegiatanOngoing,
+      'penelitianOngoing'=>$penelitianOngoing,'sumpenelitianOngoing'=>$sumpenelitianOngoing,'kerjasamaOngoing'=>$kerjasamaOngoing,'sumkerjasamaOngoing'=>$sumkerjasamaOngoing,'pengmasOngoing'=>$pengmasOngoing,'sumpengmasOngoing'=>$sumpengmasOngoing,
+      'jmlInternasional'=>$jmlInternasional,'jmlNasional'=>$jmlNasional,'sbgpesertaNasional'=>$sbgpesertaNasional,'sbgoralNasional'=>$sbgoralNasional,'sbgposterNasional'=>$sbgposterNasional,'sbgkeynoteNasional'=>$sbgkeynoteNasional,'sbgpesertaInternasional'=>$sbgpesertaInternasional,'sbgoralInternasional'=>$sbgoralInternasional,'sbgposterInternasional'=>$sbgposterInternasional,'sbgkeynoteInternasional'=>$sbgkeynoteInternasional,
+      'penelitianPast'=>$penelitianPast,'kerjasamaPast'=>$kerjasamaPast,'pengmasPast'=>$pengmasPast,'seminarPast'=>$seminarPast,'jurnalPast'=>$jurnalPast, 'bukuPast'=>$bukuPast]);
+      }
+    }
+
 }
