@@ -24,5 +24,18 @@ Route::get('/gethome', 'ApiHomeController@index');
 
 //peneliti
 Route::get('/getpeneliti', 'ApiPenelitiController@index');
-Route::get('/detailpeneliti/{id}', 'ApiPenelitiController@detail_peneliti');
+Route::get('/getdetailpeneliti/{id}', 'ApiPenelitiController@detail_peneliti');
 
+//kegiatan
+Route::get('/getpenelitian', 'ApiKegiatanController@penelitian');
+Route::get('/getkerjasama', 'ApiKegiatanController@kerjasama');
+Route::get('/getpengmas', 'ApiKegiatanController@pengmas');
+Route::get('/getseminar', 'ApiKegiatanController@seminar');
+//detail
+Route::get('/getdetailkegiatan/{id}', 'ApiKegiatanController@detailKegiatan');
+
+//publikasi
+Route::get('/getpublikasi', 'ApiPublikasiController@publikasi');
+//detail
+Route::get('/getdetailbuku/{id}', 'ApiPublikasiController@detailbuku');
+Route::get('/getdetailjurnal/{id}', 'ApiPublikasiController@detailjurnal');

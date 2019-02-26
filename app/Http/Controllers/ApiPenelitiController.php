@@ -263,6 +263,19 @@ class ApiPenelitiController extends Controller
       $jmlNasional = $semNasional->Kegiatan->count();
 
       //Peran
+      
+      $peserta = Peneliti_semua::with(['Kegiatan'=>function($var){ $var->where('id_peran',7);}])->where('id',$id)->first();
+      $sbgpeserta = $peserta->Kegiatan->count();
+
+      $oral = Peneliti_semua::with(['Kegiatan'=>function($var){ $var->where('id_peran',5);}])->where('id',$id)->first();
+      $sbgoral = $oral->Kegiatan->count();
+
+      $poster = Peneliti_semua::with(['Kegiatan'=>function($var){ $var->where('id_peran',6);}])->where('id',$id)->first();
+      $sbgposter = $poster->Kegiatan->count();
+
+      $keynote = Peneliti_semua::with(['Kegiatan'=>function($var){ $var->where('id_peran',4);}])->where('id',$id)->first();
+      $sbgkeynote = $keynote->Kegiatan->count();
+
       //nasional
       $pesertaNasional = Peneliti_semua::with(['Kegiatan'=>function($var){ $var->where('id_kategori_tipe_kegiatan',24)->where('id_peran',7);}])->where('id',$id)->first();
       $sbgpesertaNasional = $pesertaNasional->Kegiatan->count();
@@ -291,6 +304,7 @@ class ApiPenelitiController extends Controller
 
       return response()->json([
       'peneliti' => $peneliti,'penelitianDikti'=>$penelitianDikti,'kerjasama'=>$kerjasama,'seminarWorkshop'=>$seminarWorkshop,'pengmas'=>$pengmas,'jurnals'=>$jurnals,'bukus'=>$bukus,
+      'jmlInternasional'=>$jmlInternasional,'jmlNasional'=>$jmlNasional,'sbgpeserta'=>$sbgpeserta,'sbgoral'=>$sbgoral,'sbgposter'=>$sbgposter,'sbgkeynote'=>$sbgkeynote,'sbgpesertaInternasional'=>$sbgpesertaInternasional,'sbgoralInternasional'=>$sbgoralInternasional,'sbgposterInternasional'=>$sbgposterInternasional,'sbgkeynoteInternasional'=>$sbgkeynoteInternasional,
       'thnIni'=>$thnIni,'thnLalu'=>$thnLalu,'duaThnLalu'=>$duaThnLalu,'tigaThnLalu'=>$tigaThnLalu,
       'diktiThnIni'=>$diktiThnIni,'kerjasamaThnIni'=>$kerjasamaThnIni,'semwoThnIni'=>$semwoThnIni,'pengmasThnIni'=>$pengmasThnIni,'jurnalThnIni'=>$jurnalThnIni, 'bukuThnIni'=>$bukuThnIni,
       'diktiThnLalu'=>$diktiThnLalu,'kerjasamaThnLalu'=>$kerjasamaThnLalu,'semwoThnLalu'=>$semwoThnLalu,'pengmasThnLalu'=>$pengmasThnLalu, 'jurnalThnLalu'=>$jurnalThnLalu, 'bukuThnLalu'=>$bukuThnLalu,
@@ -298,7 +312,6 @@ class ApiPenelitiController extends Controller
       'diktiTigaThnLalu'=>$diktiTigaThnLalu,'kerjasamaTigaThnLalu'=>$kerjasamaTigaThnLalu,'semwoTigaThnLalu'=>$semwoTigaThnLalu,'pengmasTigaThnLalu'=>$pengmasTigaThnLalu,
       'kegiatanPast'=>$kegiatanPast,'kegiatanOngoing'=>$kegiatanOngoing,
       'penelitianOngoing'=>$penelitianOngoing,'sumpenelitianOngoing'=>$sumpenelitianOngoing,'kerjasamaOngoing'=>$kerjasamaOngoing,'sumkerjasamaOngoing'=>$sumkerjasamaOngoing,'pengmasOngoing'=>$pengmasOngoing,'sumpengmasOngoing'=>$sumpengmasOngoing,
-      'jmlInternasional'=>$jmlInternasional,'jmlNasional'=>$jmlNasional,'sbgpesertaNasional'=>$sbgpesertaNasional,'sbgoralNasional'=>$sbgoralNasional,'sbgposterNasional'=>$sbgposterNasional,'sbgkeynoteNasional'=>$sbgkeynoteNasional,'sbgpesertaInternasional'=>$sbgpesertaInternasional,'sbgoralInternasional'=>$sbgoralInternasional,'sbgposterInternasional'=>$sbgposterInternasional,'sbgkeynoteInternasional'=>$sbgkeynoteInternasional,
       'penelitianPast'=>$penelitianPast,'kerjasamaPast'=>$kerjasamaPast,'pengmasPast'=>$pengmasPast,'seminarPast'=>$seminarPast,'jurnalPast'=>$jurnalPast, 'bukuPast'=>$bukuPast]);
       }
     }
