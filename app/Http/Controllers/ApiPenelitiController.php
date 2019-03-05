@@ -316,4 +316,64 @@ class ApiPenelitiController extends Controller
       }
     }
 
+    public function getkegiatan($id)
+    {
+      $nowdate = date('Y-m-d');
+      $kegiatanOngoing = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowdate){ $var->with('Tipe_kegiatan')
+        ->where(function($k){
+            $k->where('id_tipe_kegiatan',1)
+            ->orWhere('id_tipe_kegiatan',2)
+            ->orWhere('id_tipe_kegiatan',3);
+            })
+        ->where('tanggal_akhir','>=', $nowdate)->orderBy('nama_kegiatan','asc');}])->where('id',$id)->first();
+      return response()->json([ 'kegiatanOngoing'=>$kegiatanOngoing ]);
+    }
+
+    public function getkegiatan2($id)
+    {
+      $nowdate = date('Y-m-d');
+      $kegiatanPast = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowdate){ $var->with('Tipe_kegiatan')
+        ->where('tanggal_akhir','<', $nowdate)->orderBy('nama_kegiatan','asc');}])->where('id',$id)->first();
+      return response()->json([ 'kegiatanPast'=>$kegiatanPast ]);
+    }
+
+    public function filterKegiatan(Request $request, $id, $filter){
+      $nowdate = date('Y-m-d');
+    	if($filter==0){
+        $kegiatanOngoing = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowdate){ $var->with('Tipe_kegiatan')
+          ->where(function($k){
+              $k->where('id_tipe_kegiatan',1)
+              ->orWhere('id_tipe_kegiatan',2)
+              ->orWhere('id_tipe_kegiatan',3);
+              })
+          ->where('tanggal_akhir','>=', $nowdate)->orderBy('nama_kegiatan','asc');}])->where('id',$id)->first();
+          }          
+      else{
+          $kegiatanOngoing = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowdate, $filter){ $var->with('Tipe_kegiatan')
+            ->where('id_tipe_kegiatan', $filter)
+            ->where('tanggal_akhir','>=', $nowdate)->orderBy('nama_kegiatan','asc');}])->where('id',$id)->first();
+	        }
+      return response()->json([
+        'kegiatanOngoing'=>$kegiatanOngoing,
+        'id_filter'=>$filter,
+      ]);
+     }
+
+     public function filterKegiatan2(Request $request, $id, $filter){
+      $nowdate = date('Y-m-d');
+    	if($filter==0){
+        $kegiatanPast = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowdate){ $var->with('Tipe_kegiatan')
+          ->where('tanggal_akhir','<', $nowdate)->orderBy('nama_kegiatan','asc');}])->where('id',$id)->first();
+          }          
+      else{
+        $kegiatanPast = Peneliti_semua::with(['Kegiatan'=>function($var) use($nowdate, $filter){ $var->with('Tipe_kegiatan')
+          ->where('id_tipe_kegiatan', $filter)
+          ->where('tanggal_akhir','<', $nowdate)->orderBy('nama_kegiatan','asc');}])->where('id',$id)->first();
+          }          
+      return response()->json([
+        'kegiatanPast'=>$kegiatanPast,
+        'id_filter'=>$filter,
+      ]);
+     }
+
 }
