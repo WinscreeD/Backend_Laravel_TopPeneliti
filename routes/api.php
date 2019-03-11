@@ -19,6 +19,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/login', 'ApiAuthController@login');
 
+Route::get('/karya', 'ApiKaryaController@karya');
+
 //home
 Route::get('/gethome', 'ApiHomeController@index');
 
