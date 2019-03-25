@@ -22,12 +22,31 @@ class ApiAuthController extends Controller
         $user->save();
       }
       $data_user = $user;
+      $users = Auth::user()->user_si;
 
       return response()->json([
         'success'=>true,
         'message'=>"Berhasil login",
-        'data_user'=>$data_user
+        'data_user'=>$data_user,
+        'role'=>$users
       ]);
 
   }
+//   public function user_check(){
+//     $users = Auth::user()->user_si;
+//     $true = 0;
+//     foreach ($users as $key ) {
+//         if($key->id_si == 5 && $key->id_role == 3){
+//             $true =1;
+//             break;
+//         }
+//     }
+
+//     if ($true != 1) {
+//         Auth::logout();
+//         return redirect('login')->with('error', 'Maaf anda tidak memiliki izin untuk mengakses halaman ini');
+//     } elseif ($true == 1) {
+//         return redirect('home');
+//     }
+// }
 }
