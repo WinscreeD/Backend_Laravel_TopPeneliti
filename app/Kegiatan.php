@@ -26,7 +26,11 @@ class Kegiatan extends Model
 
   public function tipe_kegiatan(){
     return $this-> belongsTo('App\Tipe_kegiatan', 'id_tipe_kegiatan');
-}
+  }
+
+  public function berkas(){
+    return $this-> hasMany('App\Berkas','id_kegiatan');
+  }
 
   // public function peneliti_semua2(){
   //   return $this->morphToMany('App\Peneliti_Semua','peserta_kegiatan','id_kegiatan','id_peneliti');

@@ -26,7 +26,7 @@ Route::get('/gethome', 'ApiHomeController@index')->middleware('auth:api');
 
 //peneliti
 Route::get('/getpeneliti', 'ApiPenelitiController@index')->middleware('auth:api');
-Route::get('/getfoto/{pth}', 'ApiPenelitiController@getfoto')->middleware('auth:api');
+Route::get('/getfoto/{pth}', 'ApiPenelitiController@getfoto');
 Route::get('/getdetailpeneliti/{id}', 'ApiPenelitiController@detail_peneliti')->middleware('auth:api');
 Route::get('/filterkegiatan/{id}/{filter}', 'ApiPenelitiController@filterKegiatan')->middleware('auth:api');
 Route::get('/filterkegiatan2/{id}/{filter}', 'ApiPenelitiController@filterKegiatan2')->middleware('auth:api');

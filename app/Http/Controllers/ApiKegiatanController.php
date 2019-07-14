@@ -100,7 +100,7 @@ class ApiKegiatanController extends Controller
 
     public function detailKegiatan($id)
     {
-        $kegiatan = Kegiatan::join('Tipe_kegiatan', 'tipe_kegiatan.id', '=', 'kegiatan.id_tipe_kegiatan')
+        $kegiatan = Kegiatan::with('Tipe_kegiatan')->with('Berkas')
         ->where('kegiatan.id', $id)
         ->first();
           
